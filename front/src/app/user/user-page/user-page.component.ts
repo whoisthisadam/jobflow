@@ -6,6 +6,7 @@ import {CategoryService} from "../../category/category.service";
 import {NavigateDirective} from "../../navigate.directive";
 import {NgIf} from "@angular/common";
 import {FormsModule} from "@angular/forms";
+import {AlertService} from "../../alert/alert.service";
 
 @Component({
 	selector: 'app-user-page',
@@ -32,6 +33,7 @@ export class UserPageComponent implements OnInit {
 		private global: GlobalService,
 		private categoryService: CategoryService,
 		private activatedRoute: ActivatedRoute,
+		private alert: AlertService,
 	) {
 	}
 
@@ -67,6 +69,16 @@ export class UserPageComponent implements OnInit {
 	updateCategory(event: any) {
 		this.userService.updateCategory(this.user.id, event.target.value).subscribe({
 			next: (res: any) => this.user = res.data,
+			error: (e: any) => this.global.error(e),
+		})
+	}
+
+	updateExp() {
+		this.userService.updateExp(this.user.id, this.user.exp).subscribe({
+			next: (res: any) => {
+				this.alert.showAlertMessage("Стаж обновлен");
+				this.user = res.data;
+			},
 			error: (e: any) => this.global.error(e),
 		})
 	}

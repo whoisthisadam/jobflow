@@ -20,13 +20,28 @@
 		</div>
 		<div class="col-12 col-lg mb-4 fs-4" data-aos="zoom-in">
 			<div class="card card-body">
-				<select *ngIf="role === 'ADMIN'" (change)="updateCategory($event)" class="form-select mb-4">
-					<option *ngIf="!user.categoryName" disabled selected>Выберите</option>
-					@for (i of categories; track i.id) {
-						<option [value]="i.id" [label]="i.name + ' | Ставка: ' + i.sum"
-								[selected]="i.id === user.categoryId"></option>
-					}
-				</select>
+				<div class="row">
+					<div class="col-12 col-lg-6 mb-2">
+						<p class="fs-4 m-0">Грейд</p>
+						<select *ngIf="role === 'ADMIN'" (change)="updateCategory($event)"
+								class="form-select mb-4">
+							<option *ngIf="!user.categoryName" disabled selected>Выберите</option>
+							@for (i of categories; track i.id) {
+								<option [value]="i.id" [label]="i.name + ' | Ставка: ' + i.sum"
+										[selected]="i.id === user.categoryId"></option>
+							}
+						</select>
+					</div>
+					<div class="col-12 col-lg-6 mb-2">
+						<p class="fs-4 m-0">Стаж</p>
+						<div class="d-flex">
+							<input type="number" [(ngModel)]="user.exp" class="form-control" min="0" step="1" max="50">
+							<button type="button" class="btn btn-primary ms-2" (click)="updateExp()" [disabled]="!user.exp && user.exp !== 0">
+								<i class="fas fa-save"></i>
+							</button>
+						</div>
+					</div>
+				</div>
 				<p *ngIf="user.categoryName" class="m-0">{{ 'Грейд: ' + user.categoryName }}</p>
 				<p *ngIf="user.categorySum" class="m-0">{{ 'Ставка: ' + user.categorySum }}</p>
 				<p class="m-0">{{ 'Дата начало работы: ' + user.dateFormatted }}</p>

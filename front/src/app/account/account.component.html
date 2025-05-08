@@ -16,13 +16,9 @@
 		<div class="col-12 col-lg mb-4" data-aos="zoom-in">
 			<div class="card card-body">
 				<div class="row">
-					<div class="col-12 col-lg-6 mb-2">
+					<div class="col-12 mb-2">
 						<p class="fs-4 m-0">ФИО</p>
 						<input type="text" [(ngModel)]="account.fio" class="form-control" minlength="1" maxlength="255">
-					</div>
-					<div class="col-12 col-lg-6 mb-2">
-						<p class="fs-4 m-0">Стаж</p>
-						<input type="number" [(ngModel)]="account.exp" class="form-control" min="0" step="1" max="50">
 					</div>
 					<div class="col-12">
 						<button type="submit" class="btn btn-primary w-100" (click)="updateFio()"

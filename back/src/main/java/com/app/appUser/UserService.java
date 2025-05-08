@@ -117,6 +117,12 @@ public class UserService implements UserDetailsService {
         return repository.save(user);
     }
 
+    public AppUser updateExp(String id, int exp) {
+        AppUser user = find(id);
+        user.setExp(exp);
+        return repository.save(user);
+    }
+
     public void deleteById(String userId) {
         AppUser user = find(userId);
         repository.deleteById(user.getId());

@@ -148,6 +148,17 @@ public class UserController {
         );
     }
 
+    @Secured({ADMIN, MANAGER})
+    @PatchMapping("/{id}/exp")
+    public Result updateExp(@PathVariable String id, @RequestParam int exp) {
+        return new Result(
+                true,
+                StatusCode.SUCCESS,
+                "Success Update Experience",
+                toDtoConverter.convert(service.updateExp(id, exp))
+        );
+    }
+
     @Secured({ADMIN})
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable String id) {

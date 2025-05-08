@@ -92,6 +92,17 @@ export class UserService {
 		);
 	}
 
+	updateExp(id: number, exp: number) {
+		return this.http.patch(
+			this.url + `/${id}/exp`,
+			"",
+			{
+				headers: this.global.headersToken,
+				params: new HttpParams().appendAll({exp: exp})
+			}
+		);
+	}
+
 	delete(id: number) {
 		return this.http.delete(
 			this.url + `/${id}`,
