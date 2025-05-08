@@ -1,0 +1,51 @@
+<nav class="navbar navbar-expand-lg bg-primary shadow" data-bs-theme="dark">
+	<div class="container">
+		<a appNavigate [navigateURL]="''" class="navbar-brand" role="button">Jobflow</a>
+		<button aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation"
+				class="navbar-toggler" data-bs-target="#navbarColor01" data-bs-toggle="collapse" type="button">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarColor01">
+			<ul class="navbar-nav mx-auto">
+
+				<li class="nav-item" data-aos="zoom-in">
+					<a appNavigate [navigateURL]="''" class="nav-link" role="button">Главная</a>
+				</li>
+
+				<li *ngIf="role === 'USER' || role === 'MANAGER'" class="nav-item" data-aos="zoom-in">
+					<a appNavigate [navigateURL]="'tasks'" class="nav-link" role="button">Задачи</a>
+				</li>
+
+				<li *ngIf="role === 'MANAGER' || role === 'ADMIN'" class="nav-item" data-aos="zoom-in">
+					<a appNavigate [navigateURL]="'users_role_user'" class="nav-link" role="button">Сотрудники</a>
+				</li>
+
+				<li *ngIf="role === 'ADMIN'" class="nav-item" data-aos="zoom-in">
+					<a appNavigate [navigateURL]="'categories'" class="nav-link" role="button">Грейды</a>
+				</li>
+				<li *ngIf="role === 'ADMIN'" class="nav-item" data-aos="zoom-in">
+					<a appNavigate [navigateURL]="'users'" class="nav-link" role="button">Пользователи</a>
+				</li>
+				<li *ngIf="role === 'ADMIN'" class="nav-item" data-aos="zoom-in">
+					<a appNavigate [navigateURL]="'stats'" class="nav-link" role="button">Аналитика</a>
+				</li>
+
+			</ul>
+			<ul class="navbar-nav">
+				<li *ngIf="role !== 'NOT'" class="nav-item" data-aos="zoom-in">
+					<a appNavigate [navigateURL]="'account'" class="nav-link" role="button">Аккаунт</a>
+				</li>
+
+				<li *ngIf="role === 'NOT'" class="nav-item" data-aos="zoom-in">
+					<a appNavigate [navigateURL]="'login'" class="nav-link" role="button">Вход</a>
+				</li>
+				<li *ngIf="role === 'NOT'" class="nav-item" data-aos="zoom-in">
+					<a appNavigate [navigateURL]="'reg'" class="nav-link" role="button">Регистрация</a>
+				</li>
+				<li *ngIf="role !== 'NOT'" class="nav-item" data-aos="zoom-in">
+					<a (click)="logout()" class="nav-link" role="button">Выход</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</nav>

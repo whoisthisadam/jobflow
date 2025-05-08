@@ -1,0 +1,64 @@
+<div class="container-fluid py-5">
+
+	<h1 class="text-center" data-aos="zoom-in">Задачи</h1>
+
+</div>
+
+<div class="container">
+
+	<div *ngIf="role === 'MANAGER'" class="card card-body mb-4 fs-4" data-aos="zoom-in">
+		<form [formGroup]="taskFormGroup" (ngSubmit)="save()" class="row">
+			<div class="col-12 col-lg-6 mb-2">
+				<p class="m-0">Наименование</p>
+				<input type="text" formControlName="name" class="form-control" minlength="1" maxlength="255">
+			</div>
+			<div class="col-12 col-lg-6 mb-2">
+				<p class="m-0">Сотрудник</p>
+				<select (change)="changeUserId($event)" class="form-select">
+					<option disabled selected>Выберите</option>
+					@for (i of users; track i.id) {
+						<option [value]="i.id" [label]="i.fio"></option>
+					}
+				</select>
+			</div>
+			<div class="col-12 col-lg-6 mb-2">
+				<p class="m-0">Трудоёмкость</p>
+				<input type="number" formControlName="intensity" class="form-control" min="1" step="1" max="1000000">
+			</div>
+			<div class="col-12 col-lg-6 mb-2">
+				<p class="m-0">Адрес где выполняется работа</p>
+				<input type="text" formControlName="address" class="form-control" minlength="1" maxlength="255">
+			</div>
+			<div class="col-12 col-lg-6 mb-2">
+				<p class="m-0">Дата выполнения задачи</p>
+				<input type="date" formControlName="dateEnd" class="form-control">
+			</div>
+			<div class="col-12 col-lg-6 mb-2">
+				<p class="m-0">Время выполнения задачи</p>
+				<input type="text" formControlName="time" class="form-control" minlength="1" maxlength="255">
+			</div>
+			<div class="col-12 mb-2">
+				<p class="m-0">Описание</p>
+				<textarea formControlName="description" class="form-control" minlength="1" maxlength="5000"></textarea>
+			</div>
+			<div class="col-12">
+				<button type="submit" class="btn btn-primary w-100" [disabled]="!checkSubmit()">Добавить</button>
+			</div>
+		</form>
+	</div>
+
+	<div class="row fs-5">
+		@for (i of tasks; track i.id) {
+			<div class="col-12 col-lg-4 mb-4" data-aos="zoom-in">
+				<a appNavigate [navigateURL]="'task'" [queryParams]="{id:i.id}" role="button">
+					<div class="card card-body">
+						<p class="fs-4 mb-2 text-center">{{ i.name }}</p>
+						<p class="m-0">{{ 'Статус: ' + i.statusName }}</p>
+						<p class="m-0">{{ 'Сотрудник: ' + i.userFio }}</p>
+					</div>
+				</a>
+			</div>
+		}
+	</div>
+
+</div>

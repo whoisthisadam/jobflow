@@ -1,0 +1,38 @@
+<div class="container-fluid py-5">
+
+	<h1 class="text-center" data-aos="zoom-in">Аналитика</h1>
+
+</div>
+
+<div class="container">
+
+	<div class="card card-body mb-4 bg-light text-black" data-aos="zoom-in">
+		<p class="fs-4 m-0">Распределение грейдов</p>
+		<app-stats-categories></app-stats-categories>
+	</div>
+
+	<div class="card card-body mb-4 bg-light text-dark" data-aos="zoom-in">
+		<p class="fs-4 m-0">Рейтинг сотрудников по продуктивности</p>
+		<app-stats-intensity></app-stats-intensity>
+	</div>
+
+	<table class="table table-hover fs-5" data-aos="zoom-in">
+		<thead>
+		<tr>
+			<th scope="col">ФИО</th>
+			<th scope="col">Количество задач</th>
+			<th scope="col">Количество часов</th>
+		</tr>
+		</thead>
+		<tbody>
+			@for (i of users; track i.id) {
+				<tr>
+					<th scope="row">{{ i.fio }}</th>
+					<td>{{ i.tasksCount }}</td>
+					<td>{{ i.tasksIntensity }}</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+
+</div>

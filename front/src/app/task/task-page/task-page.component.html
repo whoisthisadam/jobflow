@@ -1,0 +1,71 @@
+<div class="container-fluid py-5">
+
+	<h1 class="text-center" data-aos="zoom-in">{{ task.name }}</h1>
+
+	<div class="row mt-4 d-flex justify-content-center" data-aos="zoom-in">
+		<div class="col-auto">
+			<a appNavigate [navigateURL]="'tasks'" role="button" class="btn btn-primary w-100">Назад</a>
+		</div>
+	</div>
+
+</div>
+
+<div class="container">
+
+	<div class="card card-body mb-4 fs-4 text-center" data-aos="zoom-in">
+		<div class="row">
+			<div *ngIf="role === 'USER' && task.status === 'WAITING'" class="col-12 mb-2">
+				<button type="button" class="btn btn-primary w-100" (click)="work()">Приступить</button>
+			</div>
+			<div *ngIf="role === 'USER' && task.status === 'WORK' && reports.length > 0" class="col-12 mb-2">
+				<button type="button" class="btn btn-primary w-100" (click)="done()">Выполнено</button>
+			</div>
+
+			<div class="col-12 col-lg-6 mb-2"><p class="m-0">{{ 'Дата создания: ' + task.dateFormatted }}</p></div>
+			<div class="col-12 col-lg-6 mb-2"><p class="m-0">{{ 'Исполнитель: ' + task.userFio }}</p></div>
+			<div class="col-12 col-lg-6 mb-2"><p class="m-0">{{ 'Статус: ' + task.statusName }}</p></div>
+			<div class="col-12 col-lg-6 mb-2"><p class="m-0">{{ 'Трудоемкость: ' + task.intensity }}</p></div>
+			<div class="col-12 col-lg-6 mb-2"><p class="m-0">{{ 'Адрес: ' + task.address }}</p></div>
+			<div class="col-12 col-lg-6 mb-2"><p class="m-0">{{ 'Дата выполнения: ' + task.dateEndFormatted }}</p></div>
+			<div class="col-12 col-lg-6 mb-2"><p class="m-0">{{ 'Время выполнения: ' + task.time }}</p></div>
+			<div class="col-12"><p class="m-0">{{ 'Описание: ' + task.description }}</p></div>
+		</div>
+	</div>
+
+	<div *ngIf="role === 'USER' && task.status === 'WORK'" class="card card-body mb-4 fs-4" data-aos="zoom-in">
+		<form [formGroup]="reportFormGroup" (ngSubmit)="report()" class="row">
+			<div class="col-12 mb-2">
+				<p class="m-0">Наименование</p>
+				<input type="text" formControlName="name" class="form-control" minlength="1" maxlength="255">
+			</div>
+			<div class="col-12 col-lg-6 mb-2">
+				<p class="m-0">Фото</p>
+				<input type="file" (change)="changeImg($event)" class="form-control" accept="image/*">
+			</div>
+			<div class="col-12 col-lg-6 mb-2">
+				<p class="m-0">Файл</p>
+				<input type="file" (change)="changeFile($event)" class="form-control" accept="*/*">
+			</div>
+			<div class="col-12">
+				<button type="submit" class="btn btn-primary w-100" [disabled]="!checkReport()">Добавить отчет</button>
+			</div>
+		</form>
+	</div>
+
+	<div class="row fs-5">
+		@for (i of reports; track i.id) {
+			<div class="col-12 col-lg-4 mb-4" data-aos="zoom-in">
+				<div class="card card-body">
+					<div class="ratio ratio-1x1 mb-2">
+						<img [src]="i.img" alt="img" class="object-fit-cover w-100 rounded">
+					</div>
+					<p class="mb-2 fs-4 text-center">{{i.name}}</p>
+					<p class="m-0">{{'Дата: ' + i.dateFormatted}}</p>
+					<a [href]="i.img" target="_blank" class="btn btn-primary w-100 mt-2">Фото</a>
+					<a [href]="i.file" target="_blank" class="btn btn-primary w-100 mt-2">Файл</a>
+				</div>
+			</div>
+		}
+	</div>
+
+</div>

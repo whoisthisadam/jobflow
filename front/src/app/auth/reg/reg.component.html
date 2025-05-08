@@ -1,0 +1,20 @@
+<div class="container d-flex align-items-center" style="height: 500px">
+
+	<div class="w-100">
+
+		<h1 class="text-center mb-5" data-aos="zoom-in">Регистрация</h1>
+
+		<div class="row d-flex justify-content-center" data-aos="zoom-in">
+
+			<form (ngSubmit)="regFormSubmit()" [formGroup]="regForm" class="col-12 col-lg-6">
+
+				<input class="form-control mb-2" formControlName="username" placeholder="Логин" type="text">
+				<input class="form-control mb-2" formControlName="password" placeholder="Пароль" type="password">
+				<button class="btn btn-primary w-100" type="submit" [disabled]="regForm.invalid">Регистрация</button>
+
+			</form>
+		</div>
+
+	</div>
+
+</div>

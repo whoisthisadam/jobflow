@@ -1,0 +1,62 @@
+<div class="container-fluid py-5">
+
+	<h1 class="text-center" data-aos="zoom-in">Аккаунт</h1>
+
+</div>
+
+<div class="container">
+
+	<div class="row">
+		<div class="col-12 col-lg-4 mb-4" data-aos="zoom-in">
+			<input type="file" (change)="updateImg($event)" class="form-control mb-4" accept="image/*">
+			<div class="ratio ratio-1x1">
+				<img [src]="account.img" alt="img" class="object-fit-cover w-100 rounded">
+			</div>
+		</div>
+		<div class="col-12 col-lg mb-4" data-aos="zoom-in">
+			<div class="card card-body">
+				<div class="row">
+					<div class="col-12 col-lg-6 mb-2">
+						<p class="fs-4 m-0">ФИО</p>
+						<input type="text" [(ngModel)]="account.fio" class="form-control" minlength="1" maxlength="255">
+					</div>
+					<div class="col-12 col-lg-6 mb-2">
+						<p class="fs-4 m-0">Стаж</p>
+						<input type="number" [(ngModel)]="account.exp" class="form-control" min="0" step="1" max="50">
+					</div>
+					<div class="col-12">
+						<button type="submit" class="btn btn-primary w-100" (click)="updateFio()"
+								[disabled]="!account.fio && !account.exp">
+							Обновить данные
+						</button>
+					</div>
+				</div>
+			</div>
+			<div *ngIf="role === 'USER'" class="card card-body mt-4 fs-4">
+				<p *ngIf="account.categoryName" class="m-0">{{ 'Грейд: ' + account.categoryName }}</p>
+				<p *ngIf="account.categorySum" class="m-0">{{ 'Ставка: ' + account.categorySum }}</p>
+				<p class="m-0">{{ 'Дата начало работы: ' + account.dateFormatted }}</p>
+				<p class="m-0">{{ 'Стаж: ' + account.exp }}</p>
+				<p class="m-0">{{ 'Количество задач: ' + account.tasksCount }}</p>
+				<p class="m-0">{{ 'Количество часов: ' + account.tasksIntensity }}</p>
+				<p class="m-0">{{ 'Заработок: ' + income }}</p>
+
+				<div class="row fs-4">
+					<div class="col-12 col-lg mt-2">
+						<p class="m-0">Год</p>
+						<input type="number" [(ngModel)]="year" class="form-control" min="2000" step="1" max="3000">
+					</div>
+					<div class="col-12 col-lg mt-2">
+						<p class="m-0">Месяц</p>
+						<input type="number" [(ngModel)]="month" class="form-control" min="0" step="1" max="12">
+					</div>
+					<div class="col-12 col-lg-auto mt-2 d-flex align-items-end">
+						<button type="button" class="btn btn-primary" (click)="findIncome()">Посчитать</button>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+</div>

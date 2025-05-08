@@ -1,0 +1,25 @@
+<div class="container-fluid py-5">
+
+	<h1 class="text-center" data-aos="zoom-in">Сотрудники</h1>
+
+</div>
+
+<div class="container">
+
+	<div class="row fs-5">
+		@for (i of users; track i.id) {
+			<div class="col-12 col-lg-4 mb-4" data-aos="zoom-in">
+				<a appNavigate [navigateURL]="'user'" [queryParams]="{id:i.id}" role="button">
+					<div class="card card-body">
+						<div class="ratio ratio-1x1 mb-2">
+							<img [src]="i.img" alt="img" class="object-fit-cover w-100 rounded">
+						</div>
+						<p class="mb-2 fs-4 text-center">{{ i.fio }}</p>
+						<p *ngIf="i.categoryName" class="m-0">{{ 'Грейд: ' + i.categoryName }}</p>
+					</div>
+				</a>
+			</div>
+		}
+	</div>
+
+</div>

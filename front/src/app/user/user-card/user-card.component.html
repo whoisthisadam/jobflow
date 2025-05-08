@@ -1,0 +1,13 @@
+<div class="row mb-1 d-flex justify-content-center" data-aos="zoom-in">
+	<div class="col-12 col-lg-4 mb-2">
+		<input class="form-control" readonly type="text" value="{{user.fio}}">
+	</div>
+	<div class="col-12 col-lg-auto mb-2">
+		<select (change)="updateRole()" [(ngModel)]="user.role" class="form-select" required>
+			<option *ngFor="let r of roles | keyvalue" [label]="r.value" [value]="r.key"></option>
+		</select>
+	</div>
+	<div class="col-12 col-lg-auto mb-2">
+		<button (click)="delete()" class="btn btn-danger w-100" type="button">Удалить</button>
+	</div>
+</div>

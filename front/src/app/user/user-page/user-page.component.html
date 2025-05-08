@@ -1,0 +1,40 @@
+<div class="container-fluid py-5">
+
+	<h1 class="text-center" data-aos="zoom-in">{{ user.fio }}</h1>
+
+	<div class="row mt-4 d-flex justify-content-center" data-aos="zoom-in">
+		<div class="col-auto">
+			<a appNavigate [navigateURL]="'users_role_user'" role="button" class="btn btn-primary w-100">Назад</a>
+		</div>
+	</div>
+
+</div>
+
+<div class="container">
+
+	<div class="row">
+		<div class="col-12 col-lg-4 mb-4" data-aos="zoom-in">
+			<div class="ratio ratio-1x1">
+				<img [src]="user.img" alt="img" class="object-fit-cover w-100 rounded">
+			</div>
+		</div>
+		<div class="col-12 col-lg mb-4 fs-4" data-aos="zoom-in">
+			<div class="card card-body">
+				<select *ngIf="role === 'ADMIN'" (change)="updateCategory($event)" class="form-select mb-4">
+					<option *ngIf="!user.categoryName" disabled selected>Выберите</option>
+					@for (i of categories; track i.id) {
+						<option [value]="i.id" [label]="i.name + ' | Ставка: ' + i.sum"
+								[selected]="i.id === user.categoryId"></option>
+					}
+				</select>
+				<p *ngIf="user.categoryName" class="m-0">{{ 'Грейд: ' + user.categoryName }}</p>
+				<p *ngIf="user.categorySum" class="m-0">{{ 'Ставка: ' + user.categorySum }}</p>
+				<p class="m-0">{{ 'Дата начало работы: ' + user.dateFormatted }}</p>
+				<p class="m-0">{{ 'Количество задач: ' + user.tasksCount }}</p>
+				<p class="m-0">{{ 'Количество часов: ' + user.tasksIntensity }}</p>
+				<p class="m-0">{{ 'Заработок: ' + user.income }}</p>
+			</div>
+		</div>
+	</div>
+
+</div>
