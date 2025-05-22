@@ -28,7 +28,8 @@
 						],
 						"styles": [
 							"node_modules/aos/dist/aos.css",
-							"public/css/bootstrap.min.css"
+							"public/css/bootstrap.min.css",
+							"public/css/custom-light-theme.css"
 						],
 						"scripts": [
 							"node_modules/aos/dist/aos.js",

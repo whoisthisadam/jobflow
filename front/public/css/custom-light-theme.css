@@ -1,0 +1,180 @@
+/* Custom Light Theme Overrides */
+
+/* Override body background and text color */
+body {
+    background-color: #f8f9fa !important;
+    color: #212529 !important;
+}
+
+/* Override card styles */
+.card {
+    background-color: #fff !important;
+    color: #212529 !important;
+    border: 1px solid rgba(0, 0, 0, 0.125) !important;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+}
+
+.card-header {
+    background-color: rgba(0, 0, 0, 0.03) !important;
+    color: #212529 !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125) !important;
+}
+
+.card-footer {
+    background-color: rgba(0, 0, 0, 0.03) !important;
+    color: #212529 !important;
+    border-top: 1px solid rgba(0, 0, 0, 0.125) !important;
+}
+
+/* Override text colors for better visibility on light backgrounds */
+.text-muted {
+    color: #6c757d !important;
+}
+
+/* Override form control styles */
+.form-control, .form-select {
+    background-color: #fff !important;
+    color: #212529 !important;
+    border: 1px solid #ced4da !important;
+}
+
+.form-control:focus, .form-select:focus {
+    background-color: #fff !important;
+    color: #212529 !important;
+    border-color: #86b7fe !important;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25) !important;
+}
+
+/* Override button styles */
+.btn-primary {
+    background-color: #0d6efd !important;
+    border-color: #0d6efd !important;
+    color: #fff !important;
+}
+
+.btn-primary:hover, .btn-primary:focus {
+    background-color: #0b5ed7 !important;
+    border-color: #0a58ca !important;
+    color: #fff !important;
+}
+
+.btn-secondary {
+    background-color: #6c757d !important;
+    border-color: #6c757d !important;
+    color: #fff !important;
+}
+
+.btn-secondary:hover, .btn-secondary:focus {
+    background-color: #5c636a !important;
+    border-color: #565e64 !important;
+    color: #fff !important;
+}
+
+/* Override alert styles */
+.alert {
+    background-color: #fff !important;
+    border: 1px solid transparent !important;
+}
+
+.alert-info {
+    color: #055160 !important;
+    background-color: #cff4fc !important;
+    border-color: #b6effb !important;
+}
+
+.alert-success {
+    color: #0f5132 !important;
+    background-color: #d1e7dd !important;
+    border-color: #badbcc !important;
+}
+
+.alert-warning {
+    color: #664d03 !important;
+    background-color: #fff3cd !important;
+    border-color: #ffecb5 !important;
+}
+
+.alert-danger {
+    color: #842029 !important;
+    background-color: #f8d7da !important;
+    border-color: #f5c2c7 !important;
+}
+
+/* Override navbar styles */
+.navbar-brand {
+    color: #212529 !important;
+}
+
+.navbar-nav .nav-link {
+    color: #212529 !important;
+}
+
+.navbar-nav .nav-link:hover, .navbar-nav .nav-link:focus {
+    color: #0d6efd !important;
+}
+
+/* Override table styles */
+.table {
+    color: #212529 !important;
+    border-color: #dee2e6 !important;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Override footer styles */
+footer {
+    background-color: #f8f9fa !important;
+    color: #212529 !important;
+    border-top: 1px solid #dee2e6 !important;
+}
+
+/* Override text colors */
+.text-primary {
+    color: #0d6efd !important;
+}
+
+.text-secondary {
+    color: #6c757d !important;
+}
+
+.text-success {
+    color: #198754 !important;
+}
+
+.text-danger {
+    color: #dc3545 !important;
+}
+
+.text-warning {
+    color: #ffc107 !important;
+}
+
+.text-info {
+    color: #0dcaf0 !important;
+}
+
+.text-light {
+    color: #f8f9fa !important;
+}
+
+.text-dark {
+    color: #212529 !important;
+}
+
+/* Override background colors */
+.bg-light {
+    background-color: #f8f9fa !important;
+}
+
+.bg-white {
+    background-color: #fff !important;
+}
+
+/* Override input group styles */
+.input-group-text {
+    background-color: #e9ecef !important;
+    color: #212529 !important;
+    border: 1px solid #ced4da !important;
+}
