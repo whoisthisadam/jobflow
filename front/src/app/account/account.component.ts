@@ -5,6 +5,7 @@ import {AccountService} from "./account.service";
 import {AlertService} from "../alert/alert.service";
 import {FormsModule} from "@angular/forms";
 import {NgIf} from "@angular/common";
+import {SalaryService} from "../salary/salary.service";
 
 @Component({
 	selector: 'app-account',
@@ -20,16 +21,19 @@ export class AccountComponent implements OnInit {
 
 	account: any;
 
-	year: number = 0;
-	month: number = 0;
+	year: number = new Date().getFullYear();
+	month: number = new Date().getMonth() + 1;
 
-	income:any;
+	income: any;
+	salaryData: any = null;
+	isSalarySet: boolean = false;
 
 	constructor(
 		private router: Router,
 		private global: GlobalService,
 		private accountService: AccountService,
 		private alert: AlertService,
+		private salaryService: SalaryService,
 	) {
 	}
 
@@ -51,7 +55,7 @@ export class AccountComponent implements OnInit {
 				})
 			},
 			error: (e: any) => {
-				console.error(e);
+				console.error();
 				if (e.error.code === 404) {
 					this.router.navigate(['/error'], {queryParams: {message: e.error.message}});
 				} else {
@@ -80,7 +84,11 @@ export class AccountComponent implements OnInit {
 	}
 
 	findIncome() {
-		if (this.year != 0) {
+		// Reset salary data
+		this.salaryData = null;
+		this.isSalarySet = false;
+
+		if (this.year != 0 && this.month >= 1 && this.month <= 12) {
 			let date: string = this.year.toString() + '-';
 
 			if (this.month >= 1 && this.month <= 9) {
@@ -89,19 +97,59 @@ export class AccountComponent implements OnInit {
 				date += this.month.toString()
 			}
 
-			this.accountService.findIncome(date).subscribe({
+			// First try to get salary data from the new system
+			this.salaryService.findByCurrentUserAndYearAndMonth(this.year, this.month).subscribe({
 				next: (res: any) => {
-					this.income = res.data
+					if (res.flag) {
+						// Salary data found in the new system
+						this.salaryData = res.data;
+						this.income = this.salaryData.totalSalary;
+						this.isSalarySet = true;
+					} else {
+						// No salary data found, fall back to the old system
+						this.accountService.findIncome(date).subscribe({
+							next: (res: any) => {
+								if (typeof res.data === 'string') {
+									// This is a message indicating salary is not set
+									this.income = 0;
+									this.isSalarySet = false;
+								} else {
+									// This is the calculated income from the old system
+									this.income = res.data;
+									this.isSalarySet = true;
+								}
+							},
+							error: (e: any) => this.global.error(e),
+						});
+					}
 				},
-				error: (e: any) => this.global.error(e),
-			})
+				error: () => {
+					// Error getting salary data, fall back to the old system
+					this.accountService.findIncome(date).subscribe({
+						next: (res: any) => {
+							if (typeof res.data === 'string') {
+								// This is a message indicating salary is not set
+								this.income = 0;
+								this.isSalarySet = false;
+							} else {
+								// This is the calculated income from the old system
+								this.income = res.data;
+								this.isSalarySet = true;
+							}
+						},
+						error: (e: any) => this.global.error(e),
+					});
+				},
+			});
 		} else {
+			// If no year/month selected, get total income
 			this.accountService.findIncome("").subscribe({
 				next: (res: any) => {
-					this.income = res.data
+					this.income = res.data;
+					this.isSalarySet = true;
 				},
 				error: (e: any) => this.global.error(e),
-			})
+			});
 		}
 	}
 

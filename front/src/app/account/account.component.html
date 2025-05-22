@@ -35,7 +35,8 @@
 				<p class="m-0">{{ 'Стаж: ' + account.exp }}</p>
 				<p class="m-0">{{ 'Количество задач: ' + account.tasksCount }}</p>
 				<p class="m-0">{{ 'Количество часов: ' + account.tasksIntensity }}</p>
-				<p class="m-0">{{ 'Заработок: ' + income }}</p>
+				<p class="m-0" *ngIf="isSalarySet">{{ 'Заработок: ' + income }}</p>
+				<p class="m-0 text-warning" *ngIf="!isSalarySet && year && month">Зарплата за {{ month }}.{{ year }} еще не установлена</p>
 
 				<div class="row fs-4">
 					<div class="col-12 col-lg mt-2">
@@ -44,10 +45,27 @@
 					</div>
 					<div class="col-12 col-lg mt-2">
 						<p class="m-0">Месяц</p>
-						<input type="number" [(ngModel)]="month" class="form-control" min="0" step="1" max="12">
+						<input type="number" [(ngModel)]="month" class="form-control" min="1" step="1" max="12">
 					</div>
 					<div class="col-12 col-lg-auto mt-2 d-flex align-items-end">
 						<button type="button" class="btn btn-primary" (click)="findIncome()">Посчитать</button>
+					</div>
+				</div>
+
+				<!-- Display detailed salary information if available -->
+				<div *ngIf="salaryData" class="mt-4">
+					<h4>Детали зарплаты за {{ month }}.{{ year }}</h4>
+					<div class="row">
+						<div class="col-12 col-lg-6">
+							<p class="m-0">Базовая ставка: {{ salaryData.baseSalary }}</p>
+							<p class="m-0">Бонус за интенсивность: {{ salaryData.taskIntensityBonus }}</p>
+							<p class="m-0">Бонус за опыт: {{ salaryData.experienceBonus }}</p>
+						</div>
+						<div class="col-12 col-lg-6">
+							<p class="m-0">Подоходный налог: {{ salaryData.incomeTax }}</p>
+							<p class="m-0">Отчисления в пенсионный фонд: {{ salaryData.cppTax }}</p>
+							<p class="m-0">Прочие вычеты: {{ salaryData.otherDeductions }}</p>
+						</div>
 					</div>
 				</div>
 

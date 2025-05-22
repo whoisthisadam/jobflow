@@ -2,6 +2,8 @@ package com.app.appUser;
 
 import com.app.category.CategoryService;
 import com.app.enums.Role;
+import com.app.salary.UserSalary;
+import com.app.salary.UserSalaryRepository;
 import com.app.system.exception.BadRequestException;
 import com.app.system.exception.ObjectNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 import static com.app.util.Global.saveFile;
 
@@ -27,6 +30,7 @@ public class UserService implements UserDetailsService {
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
     private final CategoryService categoryService;
+    private final UserSalaryRepository userSalaryRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -61,9 +65,37 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    public float findIncome(String date) {
+    public Object findIncome(String date) {
         AppUser user = getCurrentUser();
-        if (date.isEmpty()) return user.getIncome();
+
+        // If date is empty, return the total income
+        if (date.isEmpty()) {
+            return user.getIncome();
+        }
+
+        // Parse year and month from date string (format: YYYY-MM)
+        try {
+            String[] parts = date.split("-");
+            if (parts.length >= 2) {
+                int year = Integer.parseInt(parts[0]);
+                int month = Integer.parseInt(parts[1]);
+
+                // Check if there's a salary record for this year and month
+                Optional<UserSalary> salaryOpt = userSalaryRepository.findByUserAndYearAndMonth(getCurrentUser(), year, month);
+
+                if (salaryOpt.isPresent()) {
+                    // Return the total salary from the record
+                    return salaryOpt.get().getTotalSalary();
+                } else {
+                    // No salary record found, return a special value to indicate this
+                    return "Зарплата за " + month + "." + year + " еще не установлена";
+                }
+            }
+        } catch (Exception e) {
+            // If there's an error parsing the date, fall back to the old calculation
+        }
+
+        // Fall back to the old calculation method
         return user.getIncome(date);
     }
 

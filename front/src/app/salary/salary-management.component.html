@@ -1,0 +1,166 @@
+<div class="container-fluid py-5">
+  <h1 class="text-center" data-aos="zoom-in">Управление зарплатами</h1>
+</div>
+
+<div class="container">
+  <div class="card card-body mb-4">
+    <div class="row">
+      <div class="col-12 col-lg-4 mb-3">
+        <label class="form-label">Сотрудник</label>
+        <select class="form-select" (change)="onUserSelect($event)">
+          <option value="">Выберите сотрудника</option>
+          <option *ngFor="let user of users" [value]="user.id">{{ user.fio }}</option>
+        </select>
+      </div>
+      <div class="col-12 col-lg-4 mb-3">
+        <label class="form-label">Год</label>
+        <input type="number" class="form-control" [(ngModel)]="year" min="2000" max="3000" (change)="onYearMonthChange()">
+      </div>
+      <div class="col-12 col-lg-4 mb-3">
+        <label class="form-label">Месяц</label>
+        <input type="number" class="form-control" [(ngModel)]="month" min="1" max="12" (change)="onYearMonthChange()">
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="selectedUser" class="card card-body mb-4">
+    <h3 class="mb-3">Информация о сотруднике</h3>
+    <div class="row">
+      <div class="col-12 col-lg-6 mb-2">
+        <p class="m-0"><strong>ФИО:</strong> {{ selectedUser.fio }}</p>
+        <p class="m-0"><strong>Грейд:</strong> <span [class]="selectedUser.categoryName ? 'text-success' : 'text-danger'">{{ selectedUser.categoryName || 'Не назначен' }}</span></p>
+        <p class="m-0"><strong>Базовая ставка:</strong> <span [class]="selectedUser.categorySum ? 'text-success' : 'text-danger'">{{ selectedUser.categorySum || 0 }}</span></p>
+        <p class="m-0"><strong>Дата начала работы:</strong> {{ selectedUser.dateFormatted || 'Не указана' }}</p>
+      </div>
+      <div class="col-12 col-lg-6 mb-2">
+        <p class="m-0"><strong>Стаж:</strong> <span [class]="selectedUser.exp > 0 ? 'text-success' : 'text-warning'">{{ selectedUser.exp }} лет</span></p>
+        <p class="m-0"><strong>Количество задач:</strong> {{ selectedUser.tasksCount || 0 }}</p>
+        <p class="m-0"><strong>Количество часов:</strong> <span [class]="selectedUser.tasksIntensity > 0 ? 'text-success' : 'text-warning'">{{ selectedUser.tasksIntensity || 0 }}</span></p>
+        <p class="m-0"><strong>Коэффициент опыта:</strong>
+          <span *ngIf="selectedUser.exp === 0">0 (стаж 0 лет)</span>
+          <span *ngIf="selectedUser.exp === 1">1.0 (стаж 1 год)</span>
+          <span *ngIf="selectedUser.exp >= 2 && selectedUser.exp <= 4">1.2 (стаж 2-4 года)</span>
+          <span *ngIf="selectedUser.exp >= 5 && selectedUser.exp <= 8">1.5 (стаж 5-8 лет)</span>
+          <span *ngIf="selectedUser.exp > 8">1.8 (стаж более 8 лет)</span>
+        </p>
+      </div>
+    </div>
+    <div *ngIf="!selectedUser.categorySum" class="alert alert-warning mt-2">
+      <strong>Внимание!</strong> У сотрудника не установлен грейд или базовая ставка. Рекомендуется установить грейд перед расчетом зарплаты.
+    </div>
+  </div>
+
+  <div *ngIf="existingSalary && !isEditMode" class="card card-body mb-4">
+    <h3 class="mb-3">Существующая запись о зарплате</h3>
+    <div class="alert alert-success mb-3">
+      <p class="m-0"><strong>Информация:</strong> Запись о зарплате для этого сотрудника за {{ existingSalary.monthName }} {{ existingSalary.year }} уже существует.</p>
+      <p class="m-0 mt-1">Создана: {{ existingSalary.createdAt | date:'dd.MM.yyyy HH:mm' }} ({{ existingSalary.createdByFio }})</p>
+      <p class="m-0" *ngIf="existingSalary.updatedAt !== existingSalary.createdAt">Обновлена: {{ existingSalary.updatedAt | date:'dd.MM.yyyy HH:mm' }}</p>
+    </div>
+    <div class="row">
+      <div class="col-12 col-lg-6 mb-2">
+        <p class="m-0"><strong>Базовая ставка:</strong> {{ existingSalary.baseSalary }} руб.</p>
+        <p class="m-0"><strong>Бонус за интенсивность:</strong> {{ existingSalary.taskIntensityBonus }} руб.</p>
+        <p class="m-0"><strong>Бонус за опыт:</strong> {{ existingSalary.experienceBonus }} руб.</p>
+        <p class="m-0"><strong>Сумма доходов:</strong> {{ existingSalary.baseSalary + existingSalary.taskIntensityBonus + existingSalary.experienceBonus }} руб.</p>
+      </div>
+      <div class="col-12 col-lg-6 mb-2">
+        <p class="m-0"><strong>Подоходный налог:</strong> {{ existingSalary.incomeTax }} руб.</p>
+        <p class="m-0"><strong>Отчисления в пенсионный фонд:</strong> {{ existingSalary.cppTax }} руб.</p>
+        <p class="m-0"><strong>Прочие вычеты:</strong> {{ existingSalary.otherDeductions }} руб.</p>
+        <p class="m-0"><strong>Сумма вычетов:</strong> {{ existingSalary.incomeTax + existingSalary.cppTax + existingSalary.otherDeductions }} руб.</p>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col-12">
+        <h4 class="text-success">Итоговая зарплата: {{ existingSalary.totalSalary }} руб.</h4>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col-12">
+        <button class="btn btn-primary" (click)="editExistingSalary()">Редактировать</button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="selectedUser && (!existingSalary || isEditMode)" class="card card-body mb-4">
+    <h3 class="mb-3">{{ isEditMode ? 'Редактирование записи о зарплате' : 'Новая запись о зарплате' }}</h3>
+
+    <div class="alert alert-info mb-3" *ngIf="!isEditMode">
+      <p class="m-0"><strong>Информация:</strong> Значения полей предзаполнены на основе данных сотрудника:</p>
+      <ul class="mb-0 mt-1">
+        <li>Базовая ставка - взята из грейда сотрудника</li>
+        <li>Бонус за интенсивность - рассчитан на основе количества часов работы</li>
+        <li>Бонус за опыт - рассчитан на основе стажа сотрудника</li>
+        <li>Налоги - рассчитаны автоматически (13% подоходный, 2% пенсионный)</li>
+      </ul>
+    </div>
+
+    <div class="row">
+      <div class="col-12 col-lg-6 mb-3">
+        <label class="form-label">Базовая ставка</label>
+        <div class="input-group">
+          <input type="number" class="form-control" [(ngModel)]="salary.baseSalary" min="0" step="0.01" (change)="calculateTotalSalary()">
+          <span class="input-group-text">руб.</span>
+        </div>
+        <small class="text-muted">Обычно соответствует ставке грейда сотрудника</small>
+      </div>
+      <div class="col-12 col-lg-6 mb-3">
+        <label class="form-label">Бонус за интенсивность</label>
+        <div class="input-group">
+          <input type="number" class="form-control" [(ngModel)]="salary.taskIntensityBonus" min="0" step="0.01" (change)="calculateTotalSalary()">
+          <span class="input-group-text">руб.</span>
+        </div>
+        <small class="text-muted">Рассчитывается на основе количества часов работы ({{ selectedUser.tasksIntensity || 0 }} ч)</small>
+      </div>
+      <div class="col-12 col-lg-6 mb-3">
+        <label class="form-label">Бонус за опыт</label>
+        <div class="input-group">
+          <input type="number" class="form-control" [(ngModel)]="salary.experienceBonus" min="0" step="0.01" (change)="calculateTotalSalary()">
+          <span class="input-group-text">руб.</span>
+        </div>
+        <small class="text-muted">Рассчитывается на основе стажа сотрудника ({{ selectedUser.exp }} лет)</small>
+      </div>
+      <div class="col-12 col-lg-6 mb-3">
+        <label class="form-label">Подоходный налог</label>
+        <div class="input-group">
+          <input type="number" class="form-control" [(ngModel)]="salary.incomeTax" min="0" step="0.01" (change)="calculateTotalSalary()">
+          <span class="input-group-text">руб.</span>
+        </div>
+        <small class="text-muted">Стандартная ставка 13% от суммы доходов</small>
+      </div>
+      <div class="col-12 col-lg-6 mb-3">
+        <label class="form-label">Отчисления в пенсионный фонд</label>
+        <div class="input-group">
+          <input type="number" class="form-control" [(ngModel)]="salary.cppTax" min="0" step="0.01" (change)="calculateTotalSalary()">
+          <span class="input-group-text">руб.</span>
+        </div>
+        <small class="text-muted">Стандартная ставка 2% от суммы доходов</small>
+      </div>
+      <div class="col-12 col-lg-6 mb-3">
+        <label class="form-label">Прочие вычеты</label>
+        <div class="input-group">
+          <input type="number" class="form-control" [(ngModel)]="salary.otherDeductions" min="0" step="0.01" (change)="calculateTotalSalary()">
+          <span class="input-group-text">руб.</span>
+        </div>
+        <small class="text-muted">Дополнительные вычеты (если применимо)</small>
+      </div>
+      <div class="col-12 mb-3">
+        <label class="form-label">Итоговая зарплата</label>
+        <div class="input-group">
+          <input type="number" class="form-control" [(ngModel)]="salary.totalSalary" readonly>
+          <span class="input-group-text">руб.</span>
+        </div>
+        <small class="text-muted">Рассчитывается автоматически: (Базовая ставка + Бонусы - Налоги и вычеты)</small>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <button class="btn btn-primary me-2" (click)="saveSalary()">{{ isEditMode ? 'Обновить' : 'Сохранить' }}</button>
+        <button *ngIf="isEditMode" class="btn btn-secondary" (click)="cancelEdit()">Отмена</button>
+        <button *ngIf="!isEditMode" class="btn btn-secondary" (click)="resetSalaryForm()">Сбросить</button>
+      </div>
+    </div>
+  </div>
+</div>

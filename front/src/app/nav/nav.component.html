@@ -20,6 +20,10 @@
 					<a appNavigate [navigateURL]="'users_role_user'" class="nav-link" role="button">Сотрудники</a>
 				</li>
 
+				<li *ngIf="role === 'MANAGER' || role === 'ADMIN'" class="nav-item" data-aos="zoom-in">
+					<a appNavigate [navigateURL]="'salary-management'" class="nav-link" role="button">Управление зарплатами</a>
+				</li>
+
 				<li *ngIf="role === 'ADMIN'" class="nav-item" data-aos="zoom-in">
 					<a appNavigate [navigateURL]="'categories'" class="nav-link" role="button">Грейды</a>
 				</li>

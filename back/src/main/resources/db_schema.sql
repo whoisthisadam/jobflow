@@ -134,3 +134,24 @@ VALUES
 ((SELECT id FROM roles WHERE name = 'ADMIN'), 999, 999, 10, 0),
 ((SELECT id FROM roles WHERE name = 'MANAGER'), 20, 100, 8, 100),
 ((SELECT id FROM roles WHERE name = 'USER'), 5, 25, 5, 0);
+
+-- User Salary table - Store salary data for users by month
+CREATE TABLE user_salary (
+    id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    user_id BIGINT NOT NULL,
+    year INTEGER NOT NULL,
+    month INTEGER NOT NULL,
+    base_salary FLOAT NOT NULL,
+    task_intensity_bonus FLOAT NOT NULL,
+    experience_bonus FLOAT NOT NULL,
+    income_tax FLOAT NOT NULL,
+    cpp_tax FLOAT NOT NULL,
+    other_deductions FLOAT NOT NULL,
+    total_salary FLOAT NOT NULL,
+    created_by BIGINT NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_user_salary_user FOREIGN KEY (user_id) REFERENCES app_user(id) ON DELETE CASCADE,
+    CONSTRAINT fk_user_salary_creator FOREIGN KEY (created_by) REFERENCES app_user(id),
+    CONSTRAINT unique_user_year_month UNIQUE (user_id, year, month)
+);

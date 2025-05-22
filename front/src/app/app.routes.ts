@@ -11,6 +11,7 @@ import {UserPageComponent} from "./user/user-page/user-page.component";
 import {RoleUserComponent} from "./user/role-user/role-user.component";
 import {TaskComponent} from "./task/task.component";
 import {TaskPageComponent} from "./task/task-page/task-page.component";
+import {SalaryManagementComponent} from "./salary/salary-management.component";
 
 export const routes: Routes = [
 
@@ -31,6 +32,8 @@ export const routes: Routes = [
 	{path: "task", component: TaskPageComponent},
 
 	{path: "stats", component: StatsComponent},
+
+	{path: "salary-management", component: SalaryManagementComponent},
 
 	{path: "error", component: ErrorComponent},
 	{path: "**", component: ErrorComponent},
