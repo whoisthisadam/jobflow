@@ -151,7 +151,7 @@ export class SalaryManagementComponent implements OnInit {
     const incomeTax = Math.round((baseSalary + experienceBonus + taskIntensityBonus) * 0.13 * 100) / 100;
 
     // Calculate default CPP tax (2%)
-    const cppTax = Math.round((baseSalary + experienceBonus + taskIntensityBonus) * 0.02 * 100) / 100;
+    const cppTax = Math.round((baseSalary + experienceBonus + taskIntensityBonus) * 0.01 * 100) / 100;
 
     this.salary = {
       userId: this.selectedUser ? this.selectedUser.id : null,

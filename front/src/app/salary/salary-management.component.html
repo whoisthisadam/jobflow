@@ -114,14 +114,6 @@
         <small class="text-muted">Рассчитывается на основе количества часов работы ({{ selectedUser.tasksIntensity || 0 }} ч)</small>
       </div>
       <div class="col-12 col-lg-6 mb-3">
-        <label class="form-label">Бонус за опыт</label>
-        <div class="input-group">
-          <input type="number" class="form-control" [(ngModel)]="salary.experienceBonus" min="0" step="0.01" (change)="calculateTotalSalary()">
-          <span class="input-group-text">руб.</span>
-        </div>
-        <small class="text-muted">Рассчитывается на основе стажа сотрудника ({{ selectedUser.exp }} лет)</small>
-      </div>
-      <div class="col-12 col-lg-6 mb-3">
         <label class="form-label">Подоходный налог</label>
         <div class="input-group">
           <input type="number" class="form-control" [(ngModel)]="salary.incomeTax" min="0" step="0.01" (change)="calculateTotalSalary()">
@@ -135,7 +127,7 @@
           <input type="number" class="form-control" [(ngModel)]="salary.cppTax" min="0" step="0.01" (change)="calculateTotalSalary()">
           <span class="input-group-text">руб.</span>
         </div>
-        <small class="text-muted">Стандартная ставка 2% от суммы доходов</small>
+        <small class="text-muted">Стандартная ставка 1% от суммы доходов</small>
       </div>
       <div class="col-12 col-lg-6 mb-3">
         <label class="form-label">Прочие вычеты</label>
