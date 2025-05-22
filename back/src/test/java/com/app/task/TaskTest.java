@@ -1,5 +1,6 @@
 package com.app.task;
 
+import com.app.enums.TaskStatus;
 import com.app.system.exception.ObjectNotFoundException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -142,4 +143,57 @@ public class TaskTest {
         verify(repository, times(1)).findById(1L);
     }
 
+    @Test
+    void testWorkSuccess() {
+        Task task = tasks.get(0);
+        task.setStatus(TaskStatus.WAITING); // Ensure initial status is WAITING
+
+        given(repository.findById(1L)).willReturn(Optional.of(task));
+        given(repository.save(task)).willReturn(task);
+
+        Task result = service.work("1");
+
+        assertThat(result.getId()).isEqualTo(1L);
+        assertThat(result.getStatus()).isEqualTo(TaskStatus.WORK);
+
+        verify(repository, times(1)).findById(1L);
+        verify(repository, times(1)).save(task);
+    }
+
+    @Test
+    void testWorkNotFound() {
+        given(repository.findById(1L)).willReturn(Optional.empty());
+
+        assertThrows(ObjectNotFoundException.class, () -> service.work("1"));
+
+        verify(repository, times(1)).findById(1L);
+        verify(repository, never()).save(any());
+    }
+
+    @Test
+    void testDoneSuccess() {
+        Task task = tasks.get(0);
+        task.setStatus(TaskStatus.WORK); // Ensure initial status is WORK
+
+        given(repository.findById(1L)).willReturn(Optional.of(task));
+        given(repository.save(task)).willReturn(task);
+
+        Task result = service.done("1");
+
+        assertThat(result.getId()).isEqualTo(1L);
+        assertThat(result.getStatus()).isEqualTo(TaskStatus.DONE);
+
+        verify(repository, times(1)).findById(1L);
+        verify(repository, times(1)).save(task);
+    }
+
+    @Test
+    void testDoneNotFound() {
+        given(repository.findById(1L)).willReturn(Optional.empty());
+
+        assertThrows(ObjectNotFoundException.class, () -> service.done("1"));
+
+        verify(repository, times(1)).findById(1L);
+        verify(repository, never()).save(any());
+    }
 }
